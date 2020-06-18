@@ -11,18 +11,12 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-/*
- * 1. 目的： 该 3des 加密插件为解决 flutter => java后台 => 硬件 相联系的需求 （需保证App端、服务端、硬件三方加密结果一致）结果为16进制数据；
- * 2. 现有的 pub.dev 插件如（flutter_3des， flutter_des， des_plugin）加密后的结果均和 java、硬件加密的结果不一致， 故单独搞了个3des加密插件。
- * 3. 后续开发上传解密， 以及base64加密、解密
- */
-
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
  
   // _data， _key 数据为测试数据， 实际开发根据项目需求规则生成
-  final String  _data = '2005261620000123';
-  final String _key = '702040801020305070B0D11010203050';
+  final String _data = '2005261620000123';
+  final String _key = 'FC1900000123200526162055AA5A5AA5';
   String _result  = '';
 
   @override
@@ -34,8 +28,9 @@ class _MyAppState extends State<MyApp> {
   // 3des 加密
   encrypt () {
     Flutter3desPlugin.encrypt(_key, _data).then((res) {
+      // TODO: res就是加密后的数据
       setState(() {
-        _result = res.substring(0,16); // android 下需要截取前16位就是要的结果，  ios 不用截取
+        _result = res; 
       });
     });
   }

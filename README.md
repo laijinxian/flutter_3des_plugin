@@ -16,7 +16,7 @@ samples, guidance on mobile development, and a full API reference.
 ## Add Dependency （引入）
 ```
 dependencies:
-  flutter_3des: ^0.0.1
+  flutter_3des_plugin: ^0.0.2
 ```
 
 ## Implementation (使用)
@@ -24,16 +24,19 @@ dependencies:
 ```
 import 'package:flutter_3des_plugin/flutter_3des_plugin.dart';
 
+/*
+ * 1. 目的： 该插件为 ECB模式 3des 加密， 解决 flutter => java后台 => 硬件 相联系的需求 （需保证App端、服务端、硬件三方加密结果一致）；
+ * 2. 现有的 pub.dev 插件如（flutter_3des， flutter_des， des_plugin）加密后的结果均和 java、硬件加密的结果不一致， 故诞生了这个3des加密插件。
+ * 3. 后续加入解密， 以及base64模式加密、解密
+ * 4. 有问题或者疑问，可前往 github （https://github.com/laijinxian/flutter_3des_plugin）提 Issues； 或者前往掘金（https://juejin.im/post/5eea1264e51d4574073b4a8a）留言
+ */
 void example() async {
-  const string = "my name is flutter";
-  const key = "702040801020305070B0D1101020305070B0D1112110D0B0";
-  const iv = "070B0D1101020305";
+  const data = "2005261620000123";
+  const key = "FC1900000123200526162055AA5A5AA5";
 
-  Flutter3desPlugin.encrypt(_key, _data).then((res) {
-    // res就是加密完成的数据， 这时你需要对 res 做点什么
-    setState(() {
-      _result = res.substring(0,16); // android 下需要截取前16位就是要的结果，  ios 不用截取
-    });
+  Flutter3desPlugin.encrypt(key, data).then((res) {
+    // TODO: res就是加密后的数据
+    print(res)
   });
 }
 ```

@@ -19,9 +19,7 @@
     NSDictionary* argsMap=call.arguments;
     NSString * data=argsMap[@"data"];
     NSString * key=argsMap[@"key"];
-    
     NSString *batteryLevel = [self encrypt:data key:key];
-    
     if (batteryLevel) {
         result(batteryLevel);
     } else

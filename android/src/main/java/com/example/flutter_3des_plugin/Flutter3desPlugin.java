@@ -56,7 +56,8 @@ public class Flutter3desPlugin implements FlutterPlugin, MethodCallHandler {
   }
   private static final String algorithm = "DESede";
 
-   public static byte[] encrypt(byte[] key, byte[] body) {
+  // 方法的实现
+  public static byte[] encrypt(byte[] key, byte[] body) {
       try {
           SecretKey deskey = new SecretKeySpec(key, algorithm);
           Cipher c1 = Cipher.getInstance(algorithm);
