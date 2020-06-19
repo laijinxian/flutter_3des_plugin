@@ -16,7 +16,7 @@ samples, guidance on mobile development, and a full API reference.
 ## Add Dependency （引入）
 ```
 dependencies:
-  flutter_3des_plugin: ^0.0.2
+  flutter_3des_plugin: ^0.0.3
 ```
 
 ## Implementation (使用)
