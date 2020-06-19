@@ -36,7 +36,7 @@
 - (NSString *)encrypt:(NSString *)data key:(NSString *)key {
     JKEncrypt * en = [[JKEncrypt alloc]init];
     //加密
-    NSString * encryptStr = [en encrypt3DesData:data key:key];
+    NSString * encryptStr = [en encrypt3DesStr:data key:key];
     
     return encryptStr;
 }

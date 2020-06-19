@@ -20,4 +20,6 @@
 // des加密解密
 - (NSString *)desEncryptOperation:(CCOperation)ccOperation data:(NSString *)dataHexString key:(NSString *)keyHexString;
 
+// 3Des加密
+- (NSString *)encrypt3DesStr:(NSString *)dataHexString key:(NSString *)keyHexString;
 @end

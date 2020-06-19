@@ -141,7 +141,49 @@
     return data;
 }
 
+- (NSString *)encrypt3DesStr:(NSString *)dataHexString key:(NSString *)keyHexString {
+    //把string 转NSData
+    //    NSData* data = [originalStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [self byteForHexString:dataHexString];
+    NSData *key = [self byte24ForHexString:[NSString stringWithFormat:@"%@%@",keyHexString,[keyHexString substringToIndex:16]]];
 
+            
+    CCCryptorStatus ccStatus;
+    uint8_t *bufferPtr = NULL;
+    size_t bufferPtrSize = 0;
+    size_t movedBytes = 0;
+    
+    bufferPtrSize = ([data length] + kCCBlockSize3DES) & ~(kCCBlockSize3DES - 1);
+    bufferPtr = malloc( bufferPtrSize * sizeof(uint8_t));
+    memset((void *)bufferPtr, 0x0, bufferPtrSize);
+
+    
+    //配置CCCrypt
+    ccStatus = CCCrypt(kCCEncrypt,
+        kCCAlgorithm3DES, //3DES
+        kCCOptionECBMode|kCCOptionPKCS7Padding, //设置模式
+        [key bytes],    //key
+        kCCKeySize3DES,
+        nil,     //偏移量，这里不用，设置为nil;不用的话，必须为nil,不可以为@“”
+        [data bytes],
+        [data length],
+        (void *)bufferPtr,
+        bufferPtrSize,
+        &movedBytes);
+    
+    if(ccStatus == kCCSuccess) {
+        NSData *bufferData = [NSData dataWithBytes:(const void *)bufferPtr length:(NSUInteger)movedBytes];
+        NSLog(@"%@",bufferData);
+        
+        return [bufferData convertDataToHexStr];
+        
+    } else {
+        NSLog(@"Error");
+    }
+    
+    free(bufferPtr);
+    return nil;
+}
 
 /**
  *  DES加解密算法
@@ -201,43 +243,16 @@
     char a[] = {0x12,0x34,0x56,0x78,0x90,0xAB,0xCD,0xEF};
 
     CCCryptorStatus cryptorStatus = CCCrypt(kCCEncrypt,
-                                            kCCAlgorithmDES,
-                                            kCCOptionECBMode |kCCOptionPKCS7Padding,
-                                            a,
-                                            kCCKeySizeDES,
-                                            nil,
-                                            [data bytes],
-                                            [data length],
-                                            buffer,
-                                            bufferSize,
-                                            &numBytesEncrypted);
-    
-////    Byte bytes[] = {0xcb,0x3a,0xb4,0x9c,0xd7,0xea,0x8f,0x0b};
-//    Byte bytes[] = {0xd7,0xd6,0x06,0xdd,0x5f,0x3c,0xdc,0x5e};
-////    cb3ab49c d7ea8f0b
-////    d7d606dd 5f3cdc5e
-//    data = [[NSData alloc] initWithBytes:bytes length:8];
-//
-//    size_t bufferSize = [data length] + kCCBlockSizeDES;
-//    void *buffer = malloc(bufferSize);
-//    size_t numBytesEncrypted = 0;
-//
-//    char a[] = {0x12,0x34,0x56,0x78,0x90,0xAB,0xCD,0xEF};
-////    char a[] = {0xFE,0xDC,0xBA,0x09,0x87,0x65,0x43,0x21};
-//
-////    char a[] = {0x12,0x34,0x56,0x78,0x90,0xAB,0xCD,0xEF,0xFE,0xDC,0xBA,0x09,0x87,0x65,0x43,0x21};
-//
-//    CCCryptorStatus cryptorStatus = CCCrypt(kCCEncrypt,
-//                                            kCCAlgorithmDES,
-//                                            kCCOptionECBMode,
-//                                            a,
-//                                            kCCKeySizeDES,
-//                                            nil,
-//                                            [data bytes],
-//                                            [data length],
-//                                            buffer,
-//                                            bufferSize,
-//                                            &numBytesEncrypted);
+        kCCAlgorithmDES,
+        kCCOptionECBMode |kCCOptionPKCS7Padding,
+        a,
+        kCCKeySizeDES,
+        nil,
+        [data bytes],
+        [data length],
+        buffer,
+        bufferSize,
+        &numBytesEncrypted);
     
     if(cryptorStatus == kCCSuccess) {
         NSLog(@"Success");
@@ -251,6 +266,33 @@
     
     free(buffer);
     return nil;
+}
+
+
+/**
+ *  十六进制字符串转换成Byte数组，再转换成NSData
+ *
+ *  @param hexString 十六进制字符串
+ *  @return
+ */
+- (NSData *)byte24ForHexString:(NSString *)hexString {
+    
+    if (!hexString || [hexString length] == 0) {
+        return nil;
+    }
+    
+    Byte bytes[24] = {};
+    
+    for (int i = 0; i < hexString.length/2; i ++) {
+        NSString *byteString = [hexString substringWithRange:NSMakeRange(i*2, 2)];
+        NSString *hexStr = [NSString stringWithFormat:@"0x%@",byteString];
+        unichar hexByte= strtoul([hexStr UTF8String],0,16);
+        bytes[i] = hexByte;
+    }
+    
+    NSData *data = [[NSData alloc] initWithBytes:bytes length:24];
+    
+    return data;
 }
 
 @end
