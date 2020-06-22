@@ -13,7 +13,7 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
 
-## objective （目的）
+## introduce （目的）
   1. 目的： 该插件为 ECB模式 3des 加密， 解决 flutter => java后台 => 硬件 相联系的需求 （需保证App端、服务端、硬件三方加密结果一致）；
  
   2. 现有的 pub.dev 插件如（`flutter_3des， flutter_des， des_plugin`）加密后的结果均和 java、硬件加密的结果不一致， 故诞生了这个3des加密插件。
