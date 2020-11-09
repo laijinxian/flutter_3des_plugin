@@ -20,7 +20,7 @@ samples, guidance on mobile development, and a full API reference.
  
   3. 后续加入解密， 以及base64模式加密、解密；
 
-  4. 有问题或者疑问，可前往 [github](https://github.com/laijinxian/flutter_3des_plugin) 提 `Issues`； 或者前往掘金（https://juejin.im/post/5eea1264e51d4574073b4a8a）留言
+  4. 有问题或者疑问，可前往 [github](https://github.com/laijinxian/flutter_3des_plugin) 提 `Issues`； 或者前往掘金（https://juejin.im/post/5eea1264e51d4574073b4a8a）   留言
 
 ## Add Dependency （引入）
 ```
